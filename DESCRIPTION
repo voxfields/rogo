@@ -1,0 +1,24 @@
+Package: rogo
+Title: A Tracery-like Replacement Grammar
+Version: 0.0.0.9000
+Authors@R:
+    person(given = "Vox",
+           family = "Fields",
+           role = c("aut", "cre"),
+           email = "foxfields0@gmail.com")
+Description: Rogo is a Tracery-like replacement grammar implemented in R. Rogo
+    generates text by traversing a grammar that is stored as a data table or
+    CSV. Tracery was original created by Kate Compton for grammars stored in
+    JSON files.
+License: Apache 2.0
+Encoding: UTF-8
+LazyData: true
+Imports:
+  data.table (>= 1.12.8),
+  shiny (>= 1.4.0.2),
+  stringr (>= 1.4.0)
+RoxygenNote: 6.1.1
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
