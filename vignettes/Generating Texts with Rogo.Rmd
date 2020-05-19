@@ -26,12 +26,11 @@ Tracery was original developed by Kate Compton in Javascript for grammars stored
 
 Rogo can be installed directly from github.
 
-```{r setup}
+```{r setup, results = 'hide'}
 devtools::install_github("voxfields/rogo", force = TRUE)
 library(rogo)
 
 ```
-
 
 ## Writing an example grammar
 
