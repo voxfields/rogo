@@ -1,6 +1,6 @@
 Package: rogo
 Title: A Tracery-like Replacement Grammar
-Version: 0.0.0.9000
+Version: 0.9
 Authors@R:
     person(given = "Vox",
            family = "Fields",
