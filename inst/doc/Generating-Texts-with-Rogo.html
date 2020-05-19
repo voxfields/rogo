@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Voxfields" />
+
+
+<title>Generating Texts with Rogo</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Generating Texts with Rogo</h1>
+<h4 class="author">Voxfields</h4>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p><strong>Rogo</strong> is a <strong>Tracery-like</strong> replacement grammar implemented in R.</p>
+<p>Rogo generates text by traversing a grammar that is stored as a data table or CSV. This offers a simple and flexible approach to generating text for many possible fun uses (<em>e.g.</em> stories, games or bots).</p>
+<p>Tracery was original developed by Kate Compton in Javascript for grammars stored in JSON files. You can read more about Tracery and Kate Compton’s work <a href="https://www.tracery.io">here</a>.</p>
+</div>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Rogo can be installed directly from github.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;voxfields/rogo&quot;</span>) <span class="co"># Install</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(rogo) <span class="co"># Load</span></a></code></pre></div>
+</div>
+<div id="writing-an-example-grammar" class="section level2">
+<h2>Writing an example grammar</h2>
+<p>Rogo uses grammars stored as data tables. A grammar is a dictionary of branches (<em>i.e.</em> rulesets) that match <strong>roots</strong> (<em>i.e.</em> tags) to <strong>shoots</strong> (<em>i.e.</em> replacements). When generating text, Rogo traverses these branches replacing each root randomly with one of its shoots. We can reference roots within shoots using <code>#</code>.</p>
+<p>Let’s begin by writing a simple example grammar to generate text about the discovery of exoplanets.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Create a data table with a grammar</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">data.table</span>(</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">                      <span class="co"># root specifies the tag</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">                      <span class="dt">root =</span> <span class="st">&quot;discoveryEvent&quot;</span>, </a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">                      <span class="co"># shoot specifies the replacement</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">                      <span class="dt">shoot =</span> <span class="kw">c</span>(<span class="st">&quot;Using #technique#, we #finding#.&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">                      )</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># Rogo uses grammars stored as data tables</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">exoplanet_grammar</a></code></pre></div>
+<pre><code>#&gt;              root                            shoot
+#&gt; 1: discoveryEvent Using #technique#, we #finding#.</code></pre>
+</div>
+<div id="adding-new-shoots" class="section level2">
+<h2>Adding new shoots</h2>
+<p>We can add one or more new shoots to exisiting roots or create new branches using <code>add_shoots()</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Add a new shoot to discoveryEvent root</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(exoplanet_grammar, <span class="st">&quot;discoveryEvent&quot;</span>,  <span class="co"># root</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                         <span class="st">&quot;We #finding# after validating #technique#.&quot;</span> <span class="co"># shoot</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">                    )</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># Add several new branches (root and shoots)</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(exoplanet_grammar, <span class="st">&quot;technique&quot;</span>, <span class="co"># root</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">                         <span class="st">&quot;the radial-velocity method&quot;</span>,          <span class="co"># shoots</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">                         <span class="st">&quot;transit photometry&quot;</span>, </a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">                         <span class="st">&quot;gravational microlensing&quot;</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">                      )</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(exoplanet_grammar, <span class="st">&quot;finding&quot;</span>,  <span class="co"># root</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">                         <span class="st">&quot;discovered several #planetTypes#&quot;</span>,   <span class="co"># shoots</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">                         <span class="st">&quot;described novel #planetTypes#&quot;</span>, </a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">                         <span class="st">&quot;revised our understanding of #planetTypes#&quot;</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">                      )</a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(exoplanet_grammar, <span class="st">&quot;planetTypes&quot;</span>, <span class="co"># root</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">                         <span class="st">&quot;hot Jupiters&quot;</span>,                          <span class="co"># shoots</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">                         <span class="st">&quot;mini-Neptunes&quot;</span>, </a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">                         <span class="st">&quot;super-Earths&quot;</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">                      )</a>
+<a class="sourceLine" id="cb4-21" data-line-number="21">exoplanet_grammar</a></code></pre></div>
+<pre><code>#&gt;               root                                      shoot
+#&gt;  1: discoveryEvent           Using #technique#, we #finding#.
+#&gt;  2: discoveryEvent We #finding# after validating #technique#.
+#&gt;  3:      technique                 the radial-velocity method
+#&gt;  4:      technique                         transit photometry
+#&gt;  5:      technique                   gravational microlensing
+#&gt;  6:        finding           discovered several #planetTypes#
+#&gt;  7:        finding              described novel #planetTypes#
+#&gt;  8:        finding revised our understanding of #planetTypes#
+#&gt;  9:    planetTypes                               hot Jupiters
+#&gt; 10:    planetTypes                              mini-Neptunes
+#&gt; 11:    planetTypes                               super-Earths</code></pre>
+</div>
+<div id="generating-text" class="section level2">
+<h2>Generating text</h2>
+<p>We can use <code>flatten_grammar()</code> to generate text. We start flattening the grammar at a specified root called the origin. Here, let’s generate a sentence about exoplanet discovery with the <code>discoveryEvent</code> root from our example grammar.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Generate a sentence about exoplanet discovery</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">flatten_grammar</span>(exoplanet_grammar, <span class="dt">origin =</span> <span class="st">&quot;discoveryEvent&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; [1] &quot;Using gravational microlensing, we revised our understanding of super-Earths.&quot;</code></pre>
+<p>The origin can be any root in the grammar. For example, we can generate fragments about exoplanet discovery by using the <code>finding</code> root from our grammar as the origin.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Generate a sentence fragment about exoplanet discovery</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">flatten_grammar</span>(exoplanet_grammar, <span class="dt">origin =</span> <span class="st">&quot;finding&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; [1] &quot;revised our understanding of mini-Neptunes&quot;</code></pre>
+</div>
+<div id="removing-existing-shoots" class="section level2">
+<h2>Removing existing shoots</h2>
+<p>We can remove one or more shoots from exisiting roots, or remove branches (roots and shoots) using <code>trim_shoots()</code>. If a root is called but not present in the grammar it will be tagged with <code>$</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Remove super-Earths from planetType root</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">trim_shoots</span>(exoplanet_grammar, <span class="st">&quot;planetTypes&quot;</span>, <span class="co"># root</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">                                 <span class="st">&quot;super-Earths&quot;</span>                   <span class="co"># shoot</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">                                 )</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># Remove planetType root altogether </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">exoplanet_grammar &lt;-<span class="st"> </span><span class="kw">trim_shoots</span>(exoplanet_grammar, <span class="st">&quot;planetTypes&quot;</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">                                 )</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co"># Generate a fragment about exoplanet discovery without any exoplanet root</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw">flatten_grammar</span>(exoplanet_grammar, <span class="dt">origin =</span> <span class="st">&quot;discoveryEvent&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; [1] &quot;We revised our understanding of $planetTypes$ after validating gravational microlensing.&quot;</code></pre>
+</div>
+<div id="working-with-modifiers" class="section level2">
+<h2>Working with modifiers</h2>
+<p>Modifiers deal with some (but not all) basic English rules for articles (<em>i.e.</em> determiners), pluralization and tense. Modifiers are applied to shoots after they’ve been selected for replacement.</p>
+<ul>
+<li><code>.cap</code> Capitalizes the first letter of the shoot</li>
+<li><code>.ed</code> Modifies a shoot for the paste tense</li>
+<li><code>.s</code> Pluralizes a shoot</li>
+<li><code>.a</code> Adds ‘an’ or ‘a’ as a determiner before a root</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Create a data table with a grammar</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">forest_grammar &lt;-<span class="st"> </span><span class="kw">data.table</span>(</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">                      <span class="co"># root specifies the tag</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">                    <span class="dt">root =</span> <span class="st">&quot;forestEvent&quot;</span>, </a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">                      <span class="co"># shoot specifies the replacement</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">                    <span class="dt">shoot =</span> <span class="kw">paste0</span>(<span class="st">&quot;#preps.cap# I #move.ed#, I saw #animal.a#&quot;</span>,</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">                                   <span class="st">&quot; and several #animal.s#.&quot;</span>)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">                  )</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co"># Add several new branches (root and shoots)</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">forest_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(forest_grammar, <span class="st">&quot;move&quot;</span>, <span class="co"># root</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">                         <span class="st">&quot;walk&quot;</span>,          <span class="co"># shoots</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">                         <span class="st">&quot;move&quot;</span>, </a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">                         <span class="st">&quot;jump&quot;</span>,</a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">                         <span class="st">&quot;hike&quot;</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">                      )</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">forest_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(forest_grammar, <span class="st">&quot;animal&quot;</span>,  <span class="co"># root</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17">                         <span class="st">&quot;fox&quot;</span>,   <span class="co"># shoots</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18">                         <span class="st">&quot;racoon&quot;</span>, </a>
+<a class="sourceLine" id="cb12-19" data-line-number="19">                         <span class="st">&quot;robin&quot;</span>,</a>
+<a class="sourceLine" id="cb12-20" data-line-number="20">                         <span class="st">&quot;insect&quot;</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21">                      )</a>
+<a class="sourceLine" id="cb12-22" data-line-number="22">forest_grammar &lt;-<span class="st"> </span><span class="kw">add_shoots</span>(forest_grammar, <span class="st">&quot;preps&quot;</span>,  <span class="co"># root</span></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23">                         <span class="st">&quot;when&quot;</span>,   <span class="co"># shoots</span></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24">                         <span class="st">&quot;before&quot;</span>, </a>
+<a class="sourceLine" id="cb12-25" data-line-number="25">                         <span class="st">&quot;after&quot;</span>,</a>
+<a class="sourceLine" id="cb12-26" data-line-number="26">                         <span class="st">&quot;as&quot;</span></a>
+<a class="sourceLine" id="cb12-27" data-line-number="27">                      )</a>
+<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co"># Generate text</span></a>
+<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="kw">flatten_grammar</span>(forest_grammar, <span class="dt">origin =</span> <span class="st">&quot;forestEvent&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; [1] &quot;Before I hiked, I saw a robin and several foxes.&quot;</code></pre>
+</div>
+<div id="saving-and-opening-an-existing-grammar" class="section level2">
+<h2>Saving and opening an existing grammar</h2>
+<p>A grammar can be saved as a CSV using <code>write.csv()</code>. An existing grammar saved as a CSV can be opened using <code>read_grammar()</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Temporary file for writing CSV </span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">temporary_file &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">write.csv</span>(forest_grammar, temporary_file)</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co"># Read in grammar</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">forest_grammar &lt;-<span class="st"> </span><span class="kw">read_grammar</span>(temporary_file)</a></code></pre></div>
+</div>
+<div id="bugs-questions-or-suggestions" class="section level2">
+<h2>Bugs, questions, or suggestions</h2>
+<p>To report a bug, ask a question, or offer a suggestion for improvement, please open an <a href="https://github.com/voxfields/rogo/issues">issue.</a></p>
+</div>
+<div id="more-tracery-resources" class="section level2">
+<h2>More Tracery resources</h2>
+<p>To learn more about Tracery, see Kate Compton’s work:</p>
+<ul>
+<li><a href="https://github.com/galaxykate/tracery/tree/tracery2">Tracery Javascript Repo</a></li>
+<li><a href="http://www.crystalcodepalace.com/traceryTut.html">Tracery Tutorial</a></li>
+<li><a href="http://tracery.io/editor/">Tracery Browser Editor</a></li>
+<li><a href="https://link.springer.com/chapter/10.1007/978-3-319-27036-4_14">Tracery Conference Paper</a></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
