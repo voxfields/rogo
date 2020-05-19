@@ -17,6 +17,10 @@ Imports:
   data.table (>= 1.12.8),
   shiny (>= 1.4.0.2),
   stringr (>= 1.4.0)
+Depends:
+  data.table (>= 1.12.8),
+  shiny (>= 1.4.0.2),
+  stringr (>= 1.4.0)
 RoxygenNote: 6.1.1
 Suggests:
     knitr,
