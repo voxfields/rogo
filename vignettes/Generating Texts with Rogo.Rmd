@@ -1,5 +1,5 @@
 ---
-title: "Generating texts with rogo"
+title: "Generating Texts with Rogo"
 author: "Voxfields"
 output: rmarkdown::html_vignette
 vignette: >
@@ -26,10 +26,9 @@ Tracery was original developed by Kate Compton in Javascript for grammars stored
 
 Rogo can be installed directly from github.
 
-```{r setup, results = 'hide'}
-devtools::install_github("voxfields/rogo", force = TRUE)
-library(rogo)
-
+```{r setup, results = 'hide', message= FALSE}
+devtools::install_github("voxfields/rogo") # Install
+library(rogo) # Load
 ```
 
 ## Writing an example grammar
