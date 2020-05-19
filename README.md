@@ -12,18 +12,23 @@ For a Tracery implementation in R using JSON see [TraceRy](https://github.com/di
 
 Rogo can be installed directly from github.
 
-```{r setup, results = 'hide', message= FALSE}
+``` r
 devtools::install_github("voxfields/rogo") # Install
 library(rogo) # Load
 ```
 
 ## Writing an example grammar
 
-Rogo uses grammars stored as data tables. A grammar is a dictionary of branches (*i.e.* rulesets) that match **roots** (*i.e.* tags) to **shoots** (*i.e.* replacements). When generating text, Rogo traverses these branches replacing each root randomly with one of its shoots. We can reference roots within shoots using `#`. 
+Rogo uses grammars stored as data tables. A grammar is a dictionary of
+branches (*i.e.* rulesets) that match **roots** (*i.e.* tags) to
+**shoots** (*i.e.* replacements). When generating text, Rogo traverses
+these branches replacing each root randomly with one of its shoots. We
+can reference roots within shoots using `#`.
 
-Let's begin by writing a simple example grammar to generate text about the discovery of exoplanets. 
+Let’s begin by writing a simple example grammar to generate text about
+the discovery of exoplanets.
 
-```{r example grammar}
+``` r
 # Create a data table with a grammar
 exoplanet_grammar <- data.table(
                       # root specifies the tag
@@ -35,11 +40,15 @@ exoplanet_grammar <- data.table(
 exoplanet_grammar
 ```
 
+    #>              root                            shoot
+    #> 1: discoveryEvent Using #technique#, we #finding#.
+
 ## Adding new shoots
 
-We can add one or more new shoots to exisiting roots or create new branches using `add_shoots()`. 
+We can add one or more new shoots to exisiting roots or create new
+branches using `add_shoots()`.
 
-```{r}
+``` r
 # Add a new shoot to discoveryEvent root
 exoplanet_grammar <- add_shoots(exoplanet_grammar, "discoveryEvent",  # root
                          "We #finding# after validating #technique#." # shoot
@@ -63,27 +72,51 @@ exoplanet_grammar <- add_shoots(exoplanet_grammar, "planetTypes", # root
 exoplanet_grammar
 ```
 
+    #>               root                                      shoot
+    #>  1: discoveryEvent           Using #technique#, we #finding#.
+    #>  2: discoveryEvent We #finding# after validating #technique#.
+    #>  3:      technique                 the radial-velocity method
+    #>  4:      technique                         transit photometry
+    #>  5:      technique                   gravational microlensing
+    #>  6:        finding           discovered several #planetTypes#
+    #>  7:        finding              described novel #planetTypes#
+    #>  8:        finding revised our understanding of #planetTypes#
+    #>  9:    planetTypes                               hot Jupiters
+    #> 10:    planetTypes                              mini-Neptunes
+    #> 11:    planetTypes                               super-Earths
+
 ## Generating text
 
-We can use `flatten_grammar()` to generate text. We start flattening the grammar at a specified root called the origin. Here, let's generate a sentence about exoplanet discovery with the `discoveryEvent` root from our example grammar.
+We can use `flatten_grammar()` to generate text. We start flattening the
+grammar at a specified root called the origin. Here, let’s generate a
+sentence about exoplanet discovery with the `discoveryEvent` root from
+our example grammar.
 
-```{r}
+``` r
 # Generate a sentence about exoplanet discovery
 flatten_grammar(exoplanet_grammar, origin = "discoveryEvent")
 ```
 
-The origin can be any root in the grammar. For example, we can generate fragments about exoplanet discovery by using the `finding` root from our grammar as the origin.
+    #> [1] "Using transit photometry, we revised our understanding of super-Earths."
 
-```{r}
+The origin can be any root in the grammar. For example, we can generate
+fragments about exoplanet discovery by using the `finding` root from our
+grammar as the origin.
+
+``` r
 # Generate a sentence fragment about exoplanet discovery
 flatten_grammar(exoplanet_grammar, origin = "finding")
 ```
 
+    #> [1] "revised our understanding of super-Earths"
+
 ## Removing existing shoots
 
-We can remove one or more shoots from exisiting roots, or remove branches (roots and shoots) using `trim_shoots()`. If a root is called but not present in the grammar it will be tagged with `$`.
+We can remove one or more shoots from exisiting roots, or remove
+branches (roots and shoots) using `trim_shoots()`. If a root is called
+but not present in the grammar it will be tagged with `$`.
 
-```{r}
+``` r
 # Remove super-Earths from planetType root
 exoplanet_grammar <- trim_shoots(exoplanet_grammar, "planetTypes", # root
                                  "super-Earths"                   # shoot
@@ -95,16 +128,22 @@ exoplanet_grammar <- trim_shoots(exoplanet_grammar, "planetTypes"
 flatten_grammar(exoplanet_grammar, origin = "discoveryEvent")
 ```
 
+    #> [1] "Using the radial-velocity method, we revised our understanding of $planetTypes$."
+
 ## Working with modifiers
 
-Modifiers deal with some (but not all) basic English rules for articles (*i.e.* determiners), pluralization and tense. Modifiers are applied to shoots after they've been selected for replacement.
+Modifiers deal with some (but not all) basic English rules for articles
+(*i.e.* determiners), pluralization and tense. Modifiers are applied to
+shoots after they’ve been selected for replacement.
 
-* `.cap` Capitalizes the first letter of the shoot
-* `.ed` Modifies a shoot for the paste tense
-* `.s` Pluralizes a shoot
-* `.a` Adds 'an' or 'a' as a determiner before a root
+  - `.cap` Capitalizes the first letter of the shoot
+  - `.ed` Modifies a shoot for the paste tense
+  - `.s` Pluralizes a shoot
+  - `.a` Adds ‘an’ or ‘a’ as a determiner before a root
 
-```{r}
+<!-- end list -->
+
+``` r
 # Create a data table with a grammar
 forest_grammar <- data.table(
                       # root specifies the tag
@@ -136,11 +175,14 @@ forest_grammar <- add_shoots(forest_grammar, "preps",  # root
 flatten_grammar(forest_grammar, origin = "forestEvent")
 ```
 
+    #> [1] "Before I walked, I saw an insect and several foxes."
+
 ## Saving and opening an existing grammar
 
-A grammar can be saved as a CSV using `write.csv()`. An existing grammar saved as a CSV can be opened using `read_grammar()`.
+A grammar can be saved as a CSV using `write.csv()`. An existing grammar
+saved as a CSV can be opened using `read_grammar()`.
 
-```{r}
+``` r
 # Temporary file for writing CSV 
 temporary_file <- tempfile()
 write.csv(forest_grammar, temporary_file)
@@ -149,16 +191,17 @@ write.csv(forest_grammar, temporary_file)
 forest_grammar <- read_grammar(temporary_file)
 ```
 
-## Bugs, questions, or suggestions 
+## Bugs, questions, or suggestions
 
-To report a bug, ask a question, or offer a suggestion for improvement, please open an [issue.](https://github.com/voxfields/rogo/issues)
+To report a bug, ask a question, or offer a suggestion for improvement,
+please open an [issue.](https://github.com/voxfields/rogo/issues)
 
 ## More Tracery resources
 
-To learn more about Tracery, see Kate Compton's work:
+To learn more about Tracery, see Kate Compton’s work:
 
-* [Tracery Javascript Repo](https://github.com/galaxykate/tracery/tree/tracery2)
-* [Tracery Tutorial](http://www.crystalcodepalace.com/traceryTut.html)
-* [Tracery Browser Editor](http://tracery.io/editor/)
-* [Tracery Conference Paper](https://link.springer.com/chapter/10.1007/978-3-319-27036-4_14)
-
+  - [Tracery Javascript
+    Repo](https://github.com/galaxykate/tracery/tree/tracery2)
+  - [Tracery Tutorial](http://www.crystalcodepalace.com/traceryTut.html)
+  - [Tracery Browser Editor](http://tracery.io/editor/)
+  - [Tracery Conference Paper](https://link.springer.com/chapter/10.1007/978-3-319-27036-4_14)
