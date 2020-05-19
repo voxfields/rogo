@@ -1,4 +1,4 @@
-[rogo_logo.png!](images/rogo_logo.png)
+![rogo_logo.png](images/rogo_logo.png)
 
 # A Tracery-like Replacement Grammar Implemented in R
 
