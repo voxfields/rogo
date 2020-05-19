@@ -27,10 +27,9 @@ Tracery was original developed by Kate Compton in Javascript for grammars stored
 Rogo can be installed directly from github.
 
 ```{r setup}
-devtools::install_github("voxfields/rogo")
+devtools::install_github("voxfields/rogo", force = TRUE)
 library(rogo)
-library(data.table)
-library(stringr)
+
 ```
 
 
