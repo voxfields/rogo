@@ -1,20 +1,6 @@
-# Rogo
- A Tracery-like Replacement Grammar Implemented in R
----
-title: "Generating texts with rogo"
-author: "Voxfields"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Generating Texts with Rogo}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+[rogo_logo.png!](images/rogo_logo.png)
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  comment = "#>"
-)
-```
+# A Tracery-like Replacement Grammar Implemented in R
 
 ## Introduction
 
