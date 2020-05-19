@@ -13,7 +13,7 @@ flatten_grammar <- function(grammar, origin){
     roots <- str_replace_all(
               str_extract_all(template, "#[a-zA-Z_\\.]+#")[[1]], "#", "")
     for (a_root in roots){
-      if (! a_root %in% grammar$root) {
+      if (! str_split(a_root, "\\.")[[1]][1] %in% grammar$root) {
         template <- str_replace_all(template, paste0("#", a_root, "#"),
                                               paste0("$", a_root, "$"))
       }
