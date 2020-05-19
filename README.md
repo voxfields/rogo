@@ -1,6 +1,6 @@
-# Rogo
+![rogo](images/rogo_logo.png)
  
-# A Tracery-like Replacement Grammar Implemented in R
+## A Tracery-like Replacement Grammar Implemented in R
 
 Rogo generates text by traversing a grammar that is stored as a data table or CSV. This offers a simple and flexible approach to generating text for many possible fun uses (*e.g.* stories, games or bots).
 
